@@ -1,4 +1,16 @@
 import streamlit as st
+
+st.set_page_config(
+    page_title="AI Tutor",
+    page_icon="🤖",
+    layout="wide"
+)
+st.markdown("""
+# 🤖 AI Tutor  
+### Your Personal AI & ML Learning Assistant
+---
+""")
+import streamlit as st
 from openai import OpenAI
 import os
 
