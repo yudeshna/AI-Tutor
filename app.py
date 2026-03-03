@@ -1,29 +1,39 @@
 import streamlit as st
+from openai import OpenAI
+import os
 
+# -----------------------
+# Page Configuration (ONLY ONCE)
+# -----------------------
 st.set_page_config(
     page_title="AI Tutor",
     page_icon="🤖",
     layout="wide"
 )
+
+# -----------------------
+# Custom Styling (Premium Look)
+# -----------------------
+st.markdown("""
+<style>
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+h1 {
+    font-weight: 700;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# -----------------------
+# Header Section
+# -----------------------
 st.markdown("""
 # 🤖 AI Tutor  
 ### Your Personal AI & ML Learning Assistant
 ---
 """)
-import streamlit as st
-from openai import OpenAI
-import os
-
-# -----------------------
-# Page Config
-# -----------------------
-st.set_page_config(
-    page_title="AI Tutor",
-    page_icon="🤖",
-    layout="wide"
-)
-
-st.title("🤖 AI Tutor – Personal AI & ML Learning Assistant")
 
 # -----------------------
 # API Setup
@@ -31,7 +41,7 @@ st.title("🤖 AI Tutor – Personal AI & ML Learning Assistant")
 api_key = os.getenv("OPENROUTER_API_KEY")
 
 if not api_key:
-    st.error("OPENROUTER_API_KEY not found. Please set it in your environment.")
+    st.error("OPENROUTER_API_KEY not found. Please set it in Streamlit Secrets.")
     st.stop()
 
 client = OpenAI(
@@ -89,7 +99,7 @@ for msg in st.session_state.messages:
 # -----------------------
 # User Input
 # -----------------------
-user_input = st.chat_input("Enter AI topic...")
+user_input = st.chat_input("Ask about any AI topic...")
 
 if user_input:
 
@@ -118,7 +128,7 @@ Maintain clarity, logical structure, and professional tone.
         {"role": "user", "content": user_input}
     ]
 
-    # Show user message instantly
+    # Show user message
     with st.chat_message("user"):
         st.markdown(user_input)
 
@@ -137,6 +147,6 @@ Maintain clarity, logical structure, and professional tone.
     with st.chat_message("assistant"):
         st.markdown(answer)
 
-    # Save to memory
+    # Save conversation
     st.session_state.messages.append({"role": "user", "content": user_input})
     st.session_state.messages.append({"role": "assistant", "content": answer})
